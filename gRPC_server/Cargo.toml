@@ -1,5 +1,5 @@
 [package]
-name = "gRPC_server"
+name = "grpc_server"
 version = "0.1.0"
 edition = "2021"
 
@@ -7,3 +7,4 @@ edition = "2021"
 
 [dependencies]
 tonic = "0.7.2"
+

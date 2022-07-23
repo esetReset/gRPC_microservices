@@ -1,17 +1,29 @@
 use std::io::prelude::*;
 use std::fs::File;
 use std::path::Path;
+use std::env;
 
-fn main()  {
-   let file_path = Path::new("./target/foo.txt");
-   let text = String::from("test bytes");
-   write_text_to_file(file_path, text).expect("Could not write to file {file_path}");
+
+fn main() -> std::io::Result<()>{
+   let mut file_path = env::current_dir()?;
+   file_path.push("foo.txt");
+   println!("File path {}", file_path.display());
+
+   let text = "test bytes\n";
+
+   write_text_to_file(file_path.as_path(), text)
+   .expect("Could not write to file");
+
+Ok(())
 }
 
-fn write_text_to_file(file: &Path, text:String) -> std::io::Result<()>{
-   let mut buffer = File::create(file.as_os_str())?;
+fn write_text_to_file(file_path: &Path, text:&str) -> std::io::Result<()>{
+   let mut file_option = File::options()
+      .append(true)
+      .write(true)
+      .open(file_path)?;
 
-   // Writes some prefix of the byte string, not necessarily all of it.
-   buffer.write( text.as_bytes())?;
-   Ok(())
+
+      file_option.write(text.as_bytes())?;
+      Ok(())
 }
